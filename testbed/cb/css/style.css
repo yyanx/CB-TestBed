@@ -1,0 +1,79 @@
+#text_block {
+  width : 620px;
+}
+
+#apps_container {
+  margin : 12px;
+}
+
+#apps_and_bots_table {
+  width           : 620px;
+  border-collapse : collapse;
+}
+
+.left {
+  width : 150px;
+}
+
+.top_row {
+}
+
+.top_row_left {
+  width : 150px;
+}
+
+.center_empty {
+  color      : grey;
+  font-style : italic;
+}
+
+.top_row_center {
+}
+
+.top_row_center_empty {
+  color      : grey;
+  font-style : italic;
+}
+
+.right {
+  text-align : right;
+}
+
+.right span, .top_row_right span {
+  color     : #DC5500;
+  font-size : 15px;
+}
+
+.top_row_right {
+  text-align : right;
+}
+
+.stop_link {
+  color : #AF0000;
+}
+
+#suggest_app {
+  color     : #DC5500;
+  font-size : 15px;
+}
+
+strong {
+  color       : #0B5D81;
+  font-weight : bold;
+}
+
+.panel .dark_blue {
+  background-color : #D5EBF8;
+}
+
+.panel .light_blue {
+  background-color : #F2F9FD;
+}
+
+.panel .center {
+  text-align : center;
+}
+
+.panel.goal_display_table.table_3_rows_11_21_31 {
+  width : 270px;
+}

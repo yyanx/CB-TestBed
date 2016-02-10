@@ -1,0 +1,28 @@
+a:not([href]) {
+  cursor : not-allowed;
+}
+
+div#player > span {
+  display        : table-cell;
+  width          : inherit;
+  height         : inherit;
+  color          : #FFF;
+  font-size      : 18px;
+  text-align     : center;
+  vertical-align : middle;
+  pointer-events : none;
+  line-height    : 20px;
+}
+
+div#player > span > span:first-child {
+  color     : #77C6FF;
+  font-size : 35px;
+}
+
+div#player > span > span:last-child {
+  display     : block;
+  width       : 180px;
+  font-size   : 9px;
+  line-height : 12px;
+  margin      : 0 auto;
+}

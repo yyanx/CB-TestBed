@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Your Broadcast Page! - CB</title>
+        <link rel="stylesheet" href="cb/css/3333b43df1bc.css" type="text/css">
+        <link rel="stylesheet" href="cb/css/fe74710bee05.css" type="text/css" media="all">
+        <link rel="stylesheet" href="cb/css/a8c025e8b244.css" type="text/css" media="all">
+        <link rel="stylesheet" href="cb/css/faf7194bc934.css" type="text/css" media="all">
+        <link rel="stylesheet" href="cb/css/e446c9cdaac4.css" type="text/css" media="all">
+        <link rel="stylesheet" href="cb/css/style.css" type="text/css">
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script type="application/javascript" src="lib/jquery-2.2.0.min.js"></script>
+        <script type="application/javascript" src="script.js"></script>
+    </head>
+    <body>
+        <div id="header">
+            <div class="section">
+                <div align="right">
+                    <div id="user_information">
+                        <div class="top" align="left">
+                            <img src="cb/images/ico-male-blue.gif" width="14" height="15" alt="Male Icon">
+                            <a class="username">{#ROOM_SLUG#}</a>
+                            <div class="links">
+                                <a class="white">MY PROFILE</a> |
+                                <a class="white">LOG OUT</a>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Status:</th>
+                                        <td>Supporter</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th>You have:</th>
+                                        <td>
+                                            <div class="overflow"><strong><a class="tokencountlink"><span class="tokencount">&infin;</span> Tokens</a></strong></div>
+                                        </td>
+                                        <td><a class="purchase_tokens">(Get More)</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-bar">
+                <ul id="nav">
+                    <li><a>CHAT ROOMS</a></li>
+                    <li><a>BROADCAST YOURSELF</a></li>
+                    <li><a>TAGS</a></li>
+                    <li><a>BLOG</a></li>
+                    <li><a>EARN FREE TOKENS</a></li>
+                    <li><a>
+                        MY COLLECTION
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="main">
+            <div class="top-section top-section_small_gfx">
+                <ul class="sub-nav">
+                    <li class="active selected" id="mybroadcast-nav-tab"><a>My Broadcast</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="ad">
+                    <div id="broadcast_guide">
+                        <p class="hide-controls" style="text-align:center;"><a id="toggle-broadacst-controls">Hide Broadcaster's Guide</a></p>
+                        <img src="cb/images/camera.png" width="36" height="28" alt="Broadcast Guide">
+                        <h2 style="text-align:center;"><strong>Broadcaster's Guide</strong></h2>
+                        <hr>
+                        <h2><strong>Age Verification</strong></h2>
+                        <ul>
+                            <li>
+                                To earn tokens, you must submit
+                                <a>age verification</a>
+                            </li>
+                        </ul>
+                        <h2><strong>Tutorial Videos</strong></h2>
+                        <ul>
+                            <li>Users and broadcasters have created <a>videos</a> to teach you how to CB and earn money. You can view them on <a>CB's vimeo channel</a>.</li>
+                        </ul>
+                        <h2><strong>Fan Clubs</strong></h2>
+                        <ul>
+                            <li>Enable your fan club in the "Settings &amp; Privacy" tab to earn extra income</li>
+                        </ul>
+                        <h2><strong>Money Making Tips</strong></h2>
+                        <ul>
+                            <li>Send private messages to blue users and use the [Tab Key] to switch between PM windows</li>
+                            <li>Encourage viewers to 'Follow' you</li>
+                            <li>Ask your users to type ':tipher' in order to enable emoticons that encourage members to tip</li>
+                            <li>Have your microphone turned on</li>
+                            <li>Update your <a>bio with colors</a> and feature top tippers</li>
+                            <li>Encourage users to raise their spending limits and get 200 tokens for free</li>
+                        </ul>
+                        <h2><strong>Click On a Username To:</strong></h2>
+                        <ul>
+                            <li>Send a user a PM</li>
+                            <li>Add/Remove a Moderator</li>
+                            <li>Ignore a user's messages</li>
+                            <li>Silence a user for 6 hours</li>
+                            <li>Kick/Ban a user for 30 days</li>
+                        </ul>
+                        <h2><strong>Username Colors</strong></h2>
+                        <ul>
+                            <li><span class="orange">Orange</span> names are Broadcasters</li>
+                            <li><span class="red">Red</span> names are Moderators</li>
+                            <li><span class="lightblue">Light Blue</span> names own or have purchased tokens</li>
+                            <li><span class="blue">Dark Blue</span> names have tipped at least 50 tokens in the past 2 weeks</li>
+                            <li><span class="purple">Light Purple</span> names have tipped at least 250 tokens in the past 2 weeks</li>
+                            <li><span class="darkpurple">Dark Purple</span> names have tipped at least 1000 tokens in the past 2 weeks</li>
+                            <li><span class="green">Green</span> names are fan club members</li>
+                            <li><span class="grey">Grey</span> names have no tokens</li>
+                        </ul>
+                        <h2><strong>Assign Moderators</strong></h2>
+                        <ul>
+                            <li>Those you trust can help monitor your chat room and silence troublemakers</li>
+                        </ul>
+                        <h2><strong>Change Room Subject</strong></h2>
+                        <ul>
+                            <li>Click on the room subject at the top of your broadcast to change the text, list token goals, and input all other forms of useful information</li>
+                        </ul>
+                        <h2><strong>Audio Recommended</strong></h2>
+                        <ul>
+                            <li>Members love hearing you. Greet users by name and try interacting with both audio and text</li>
+                        </ul>
+                        <h2><strong class="yellow_background">Tips Are Highlighted</strong></h2>
+                        <ul>
+                            <li>Be sure to thank those who are generous enough to tip you</li>
+                        </ul>
+                        <h2><strong>Checking Stats</strong></h2>
+                        <ul>
+                            <li>Click on the "Contest Stats" and "Token Stats" tabs to see how much money you've earned broadcasting</li>
+                        </ul>
+                        <h2><strong>Trouble Broadcasting?</strong></h2>
+                        <ul>
+                            <li>First, <a>upgrade Adobe Flash</a> to ensure you are using the
+                                latest version.
+                            </li>
+                            <li>If you are still having problems,
+                                <a>contact support</a>.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="c-1">
+                    <div id="fraud_warning">
+                        <p><strong>BE ON THE LOOKOUT!!</strong> Criminals are approaching
+                            performers offering them a "business proposition" that involves credit
+                            card fraud (<a>read more</a> | <a class="dismiss">dismiss</a>)</p>
+                    </div>
+                    <div class="block" id="defchat">
+                        <div class="section">
+                            <div class="video-box">
+                                <div class="title">
+                                    <h2 id="roomtitle" class="editabletext" style="display: block;">{#ROOM_SUBJECT#}</h2>
+                                    <div class="form" style="display: none;" id="roomtitleform">
+                                        <form method="post" action="#">
+                                            <input type="text" name="roomtitle" value="{#ROOM_SUBJECT#}" maxlength="200">
+                                            <input type="submit" class="titlesubmit" value="Submit">
+                                            <input type="submit" class="titlecancel" value="Cancel">
+                                        </form>
+                                    </div>
+                                    <div id="tooltip-subject" style="display:none">Try adding #hashtags to your room subject to attract more viewers.</div>
+                                </div>
+                                <div id="player" style="width:498px;height:407px;background-color:#000"><span></span></div>
+                                <div class="tip_shell">
+                                    <div id="broadcaster_panel">
+                                        <div class="broadcaster_panel_goal_display" style="display: none;">
+                                            <div class="broadcaster_token_options" xmlns="http://www.w3.org/1999/html">
+                                                Group Show:
+                                            <span class="group_show_active">
+                                                <span class="num_users_waiting_for_group">0</span>/<span class="num_users_required_for_group">2</span> Users Ready
+                                            </span>
+                                                <div class="private_settings">Privates: <a class="value">Allowed</a></div>
+                                            </div>
+                                            <div class="goal_display"><!-- goal_display_table --></div>
+                                        </div>
+                                        <div class="broadcaster_panel_default">
+                                            <div class="broadcast_intro">
+                                                <p>Use the Apps &amp; Bots tab below to select an app and up to 3 bots to enhance your room.</p>
+                                            </div>
+                                            <div class="broadcaster_token_options" xmlns="http://www.w3.org/1999/html">
+                                                Group Show:
+                                            <span class="group_show_active">
+                                                <span class="num_users_waiting_for_group">0</span>/<span class="num_users_required_for_group">2</span> Users Ready
+                                            </span>
+                                                <div class="private_settings">Privates: <a class="value">Allowed</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="user_panel" style="display: none;">
+                                        <div class="goal_display"><!-- goal_display_table --></div>
+                                        <div class="token_options">
+                                            <div class="token_balance">You currently have:
+                                                <div class="tokens tokencount">0</div>
+                                                tokens
+                                            </div>
+                                            <a class="purchase_tokens">Get More Tokens</a>
+                                            <br>
+                                            <div class="private_show_controls">
+                                                <a class="start_private_show">Start Private Show</a>
+                                            </div>
+                                            <div class="group_show_controls">
+                                            <span class="start_group_show">
+                                                <a>Join Group Show</a> (
+                                                <span class="num_users_waiting_for_group">0</span>/
+                                                <span class="num_users_required_for_group">2</span>)
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="green_button_tip"><a href="#" class="tip_button">SEND TIP</a></div>
+                                    </div>
+                                    <div style="display: none;" class="overlay_popup tip_popup">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="formborder">
+                                                        <div class="title">Send a tip</div>
+                                                        <div class="body">
+                                                            <div class="purchase_tokens">
+                                                                <a>Purchase Tokens</a>
+                                                            </div>
+                                                            <div class="balance">
+                                                                Your current balance: <span><span class="tokencount">&infin;</span> tokens</span>
+                                                            </div>
+                                                            <form method="post" action="#">
+                                                                <label>Enter tip amount:</label>
+                                                                <input type="text" id="id_tip_amount" name="tip_amount" value="25" style="width: 30px; margin-bottom: 5px;"><br>
+                                                                <div id="tip_message">
+                                                                    <label>Include an optional message:</label><br>
+                                                                    <textarea style="width: 360px; height: 30px; margin-bottom: 3px;" id="id_tip_msg_input" name="message" maxlength="255"></textarea>
+                                                                </div>
+                                                                <div id="tip_options" style="display:none;">
+                                                                    <label id="tip_options_select_label"></label><br>
+                                                                    <select name="tip_options" id="tip_options_select" style="width: 360px; height: 30px; ">
+                                                                    </select>
+                                                                </div>
+                                                                <span id="invalid_tip_message" style="display: none">Invalid tip amount!</span>
+                                                                <input type="submit" value="Send tip to broadcaster" class="button" id="id_tip_message" style="margin: 10px 0 0 0; float: right;">
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <img src="cb/images/emoticon_div_carrot_left.gif" alt="div" width="396" height="12" class="divider">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-holder">
+                                <div class="chat-box">
+                                    <ul class="buttons">
+                                        <li class="active"><a data-tab="chat" class="nooverlay">CHAT <span class="counter" style="display:none;">(<span class="val">0</span>)</span></a></li>
+                                        <li><a data-tab="users" class="nooverlay">USERS (<span class="usercount">1</span>)</a></li>
+                                        <li><a data-tab="settings" class="nooverlay"><img src="cb/images/ico-preferences.png" width="16" height="16" class="png"></a></li>
+                                    </ul>
+                                    <div class="users-list"></div>
+                                    <div class="chat-list" style="height: 439px; font-size: 9pt;">
+                                        <div class="text"><p>connection established</p></div>
+                                        <div class="text"><p>Broadcaster Rules: Tokens are the only form of payment allowed. You may promote your personal website as long as it does not offer video chat. Do not provide your Skype or Yahoo Messenger to anyone, and do not ask users to chat with you elsewhere.</p></div>
+                                        <div class="text"><p>Your cam is visible to men, women, transsexuals, couples. Edit this in settings &amp; privacy.</p></div>
+                                        <div class="text"><p><span class="roommessagelabel">room subject changed to "{#ROOM_SUBJECT#}"</span></p></div>
+                                        <div class="text"><p>Broadcaster <span class="username othermessagelabel hostmessagelabel" data-nick="{#ROOM_SLUG#}">{#ROOM_SLUG#}</span> has joined the room.</p></div>
+                                    </div>
+                                    <form action="#" class="chat-form" name="chat_form" autocomplete="off">
+                                        <fieldset>
+                                            <div class="row">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><input id="chat_input" type="text" class="text" autocomplete="off" maxlength="1024"></td>
+                                                            <td width="1">
+                                                                <label for="__users" style="float:right;margin: -3px 5px 0 0;"><select id="__users" style="font-size: 11px; font-weight: bold;"></select></label>
+                                                            </td>
+                                                            <td width="20">
+                                                                <a class="smile emoticon_button nooverlay">smile</a>
+                                                            </td>
+                                                            <td width="40" class="smilesubmit">
+                                                                <div class="button_send">
+                                                                    <a href="#" class="send_message_button nooverlay">SEND</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-user">
+                            <div class="headline" style="display: block;">
+                                <ul class="buttons">
+                                    <li class="active"><a class="nooverlay" data-tab="apps_and_bots" id="apps_and_bots_tab">Apps &amp; Bots</a></li>
+                                    <li class="">
+                                        <a class="nooverlay" data-tab="bio">My Bio</a></li>
+                                    <li class=""><a class="nooverlay" data-tab="settings">Settings &amp; Privacy</a></li>
+                                    <li><a class="nooverlay" data-tab="contest">Contest Stats</a></li>
+                                    <li class=""><a data-tab="token_stats" class="nooverlay">Token Stats</a></li>
+                                    <li class=""><a data-tab="share_and_earn" class="nooverlay">Share</a></li>
+                                    <li><a data-tab="memberships" class="nooverlay">Memberships</a></li>
+                                </ul>
+                                <ul class="socials">
+                                    <li>
+                                        <div id="broadcaster_rating" style="margin-right: 7px;">
+                                            <span class="btn_left"><span class="thumb_placeholder"></span></span>
+                                            <span class="btn_middle"><span class="thumbs_up_text">0</span><span class="thumbs_up_image"></span><span class="rating_percent green  ">100%</span><span class="thumbs_down_image"></span><span class="thumbs_down_text">0</span></span>
+                                            <span class="btn_right"><span class="thumb_placeholder"></span></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="apps_and_bots" style="display: block;">
+                                <div id="apps_container">
+                                    <table id="apps_and_bots_table">
+                                        <tbody>
+                                            <tr class="top_row">
+                                                <td class="top_row_left">
+                                                    <legend>Active App:</legend>
+                                                </td>
+                                                <td class="top_row_center_empty">
+                                                    None Selected
+                                                </td>
+                                                <td class="top_row_right">
+                                                    <a class="toolbar_popup_link">Choose an App</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="left">
+                                                    <legend>Bot #1:</legend>
+                                                </td>
+                                                <td class="center_empty">
+                                                    None Selected
+                                                </td>
+                                                <td class="right">
+                                                    <a class="toolbar_popup_link">Choose a Bot</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="left">
+                                                    <legend>Bot #2:</legend>
+                                                </td>
+                                                <td class="center_empty">
+                                                    None Selected
+                                                </td>
+                                                <td class="right">
+                                                    <a class="toolbar_popup_link">Choose a Bot</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="left">
+                                                    <legend>Bot #3:</legend>
+                                                </td>
+                                                <td class="center_empty">
+                                                    None Selected
+                                                </td>
+                                                <td class="right">
+                                                    <a class="toolbar_popup_link">Choose a Bot</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br><a id="suggest_app" class="toolbar_popup_link nextcam">Suggest an App Idea <img src="cb/images/arrow-right.png"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-holder">
+            <div class="footercon">
+                <div class="col1">
+                    <h2>Free Cams</h2>
+                    <dl>
+                        <dd><a>Featured Cams</a></dd>
+                        <dd><a>Female Cams</a></dd>
+                        <dd><a>Male Cams</a></dd>
+                        <dd><a>Couple Cams</a></dd>
+                        <dd><a>Transsexual Cams</a></dd>
+                    </dl>
+                </div>
+                <div class="col2">
+                    <h2>Free Cams by Age</h2>
+                    <dl>
+                        <dd><a>Teen Cams (18+)</a></dd>
+                        <dd><a>18 to 21 Cams</a></dd>
+                        <dd><a>20 to 30 Cams</a></dd>
+                        <dd><a>30 to 50 Cams</a></dd>
+                        <dd><a>Mature Cams (50+)</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col3">
+                    <h2>Free Cams by Region</h2>
+                    <dl>
+                        <dd><a>North American Cams</a></dd>
+                        <dd><a>Other Region Cams</a></dd>
+                        <dd><a>Euro Russian Cams</a></dd>
+                        <dd><a>Philippines Cams</a></dd>
+                        <dd><a>Asian Cams</a></dd>
+                        <dd><a>South American Cams</a>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col4">
+                    <h2>Free Cams by Status</h2>
+                    <dl>
+                        <dd><a title="Exhibitionist Cams  - Couple">Exhibitionist Cams</a>
+                        </dd>
+                        <dd><a>HD Cams</a></dd>
+                        <dd><a>Private Shows</a></dd>
+                        <dd><a>Group Shows</a></dd>
+                    </dl>
+                </div>
+                <div class="col5">
+                    <h2>Private Shows</h2>
+                    <dl>
+                        <dd><a>6 Tokens per Minute</a></dd>
+                        <dd><a>12 Tokens per Minute</a></dd>
+                        <dd><a>18 Tokens per Minute</a></dd>
+                        <dd><a>30 Tokens per Minute</a></dd>
+                        <dd><a>60 Tokens per Minute</a></dd>
+                        <dd><a>90 Tokens per Minute</a></dd>
+                    </dl>
+                </div>
+            </div>
+            <ul class="nav">
+                <li><a>Terms &amp; Conditions</a></li>
+                <li><a>Privacy Policy</a></li>
+                <li><a>Support</a></li>
+                <li><a>Law Enforcement</a></li>
+                <li><a>Billing</a></li>
+                <li><a>Delete Account</a></li>
+                <li><a>Apps</a></li>
+                <li><a>Contest</a></li>
+                <li><a>Affiliates</a></li>
+                <li><a>Buy Traffic</a></li>
+                <li><a>Jobs</a></li>
+                <li><a>Sitemap</a></li>
+            </ul>
+            <ul>
+                <li><a>العربية</a></li>
+                <li><a>Deutsch</a></li>
+                <li><a>English</a></li>
+                <li><a>Ελληνικά</a></li>
+                <li><a>Español</a></li>
+                <li><a>Français</a></li>
+                <li><a>हिन्दी</a></li>
+                <li><a>Italiano</a></li>
+                <li><a>日本語</a></li>
+                <li><a>한국어</a></li>
+                <li><a>Nederlands</a></li>
+                <li><a>Português</a></li>
+                <li><a>русский язык</a></li>
+                <li><a>Türkçe</a></li>
+                <li><a>中文</a></li>
+            </ul>
+            <p><a>18 U.S.C. 2257 Record Keeping Requirements Compliance Statement</a></p>
+            <p>Main Office: ----- -----, --- ----- -- ---- -- -----, ---- ------, -- -----</p>
+            <p>-------- -------- -------, ---- - ----------- -------- ------, ------- -------- ----, -------, ------ ------, --- ---, -------</p>
+            <p>© Copyright __________.com 2011 - 2016. All Rights Reserved. Patent Pending. __</p>
+            <p style="margin-top: 15px;">
+                <img src="cb/images/safelabeling.gif">
+                <a><img src="cb/images/88x31_RTA-5042-1996-1400-1577-RTA_a.gif" style="margin: 0 10px;"></a>
+                <a><img src="cb/images/ApprovedASACPmember.gif"></a>
+            </p>
+        </div>
+    </body>
+</html>
