@@ -47,14 +47,18 @@ class CB
   # @param {Array} allowed_users
   # @see Apps 1.0 documentation {@link https://chaturbate.com/apps/docs/api/cb.limitCam.html|cb.limitCam}
   ###
-  limitCam_start: (message, allowed_users) -> Room.setCam(running: true, message: message, users: allowed_users)
+  limitCam_start: (message, allowed_users) ->
+    if @__activated
+      Room.setCam(running: true, message: message, users: allowed_users)
 
   ###*
   # Stops the camera from being hidden from viewers, returning the broadcaster to public broadcasting.
   #
   # @see Apps 1.0 documentation {@link https://chaturbate.com/apps/docs/api/cb.limitCam.html|cb.limitCam}
   ###
-  limitCam_stop: -> Room.setCam(running: false)
+  limitCam_stop: ->
+    if @__activated
+      Room.setCam(running: false)
 
   ###*
   # Add an array of usernames to allow viewing of the cam while it is hidden to others. You can use this before, during, or after you start/stop limiting the cam.
@@ -62,7 +66,9 @@ class CB
   # @param {Array} allowed_users
   # @see Apps 1.0 documentation {@link https://chaturbate.com/apps/docs/api/cb.limitCam.html|cb.limitCam}
   ###
-  limitCam_addUsers: (allowed_users) -> Room.setCam(addUsers: allowed_users)
+  limitCam_addUsers: (allowed_users) ->
+    if @__activated
+      Room.setCam(addUsers: allowed_users)
 
   ###*
   # Remove an array of usernames to no longer be able to view the cam.
@@ -70,14 +76,18 @@ class CB
   # @param {Array} removed_users
   # @see Apps 1.0 documentation {@link https://chaturbate.com/apps/docs/api/cb.limitCam.html|cb.limitCam}
   ###
-  limitCam_removeUsers: (removed_users) -> Room.setCam(removeUsers: removed_users)
+  limitCam_removeUsers: (removed_users) ->
+    if @__activated
+      Room.setCam(removeUsers: removed_users)
 
   ###*
   # Remove all viewers from being able to view the cam.
   #
   # @see Apps 1.0 documentation {@link https://chaturbate.com/apps/docs/api/cb.limitCam.html|cb.limitCam}
   ###
-  limitCam_removeAllUsers: -> Room.setCam(users: [])
+  limitCam_removeAllUsers: ->
+    if @__activated
+      Room.setCam(users: [])
 
   ###*
   # Check if a particular username is in the list of those allowed to view the cam.

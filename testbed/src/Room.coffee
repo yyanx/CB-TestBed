@@ -3,7 +3,7 @@ class Room
   defaultSubject = broadcaster.charAt(0).toUpperCase() + broadcaster.slice(1) + "'s room"
   subject = defaultSubject
   debug = false
-  apps = []
+  apps = [ {}, {}, {}, {} ]
 
   cam =
     running: false
@@ -71,10 +71,10 @@ class Room
     $node
 
   triggerHandler = (type, obj) ->
-    for cb in apps
-      if cb and handler = cb.__eventsHandlers[type]
+    for app in apps
+      if app.cb and handler = app.cb.__eventsHandlers[type]
         result = handler(obj)
-        obj = result if result
+        obj = result if result and (type != 'message' or (result instanceof Object and result.m isnt undefined))
 
     return obj
 
@@ -150,59 +150,103 @@ class Room
       $__users.append $('<option>').text(_user).css({color: color})
     $__users.val(currentUser).css({color: $__users.find(":selected").css('color')})
 
+    $('.chat-box .buttons span.usercount').text(Room.getUsers().length)
+
+  loadScript = ({script, slot, name}, deactivateCallback) ->
+    if script
+      Room.deactivateApp(slot)
+
+      app = apps[slot] = {}
+      app.name = name or if slot is 0 then 'CBApp' else 'CBBot #' + slot
+      app.script = script
+      app.deactivateCallback = deactivateCallback
+
+    Room.updateUI()
+
+  @activateApp: (slot) ->
+    @deactivateApp(slot)
+    app = apps[slot]
+
+    runScript = (cb = new CB(slot)) ->
+      mask = {}
+      for p in Object.keys(@) then mask[p] = undefined
+      mask['cb'] = cb
+      mask['cbjs'] = CBJS
+
+      try
+        (->
+          `with (this) {
+            eval(app.script)
+          }`
+          return
+        ).call mask
+      catch e
+        if cb.__activated
+          Room.error('App Error: ' + e.message)
+          Room.deactivateApp(cb.slot)
+
+      return cb
+
+    getSettings runScript().settings_choices, (settings) ->
+      runScript(app.cb = new CB(slot, settings)).sendNotice(app.name + ' app has started.')
+
+      Room.updateUI()
+
+    return false
+
+  @deactivateApp: (slot) ->
+    app = apps[slot]
+
+    if app and app.cb instanceof CB
+      app.cb = app.cb.__activated = null
+      app.deactivateCallback() if app.deactivateCallback instanceof Function
+
+    @updateUI()
+
+    return false
+
   @loadApp: (path, slot) ->
     $.ajax(
-      {
-        url     : path,
-        dataType: 'text',
-        success : (script) ->
-          cb = null
-          appName = if slot is 0 then 'CBApp' else 'CBBot #' + slot
-          apps_and_bots_table = $('#apps_and_bots_table')
-
-          runScript = (cb = new CB(slot)) ->
-            mask = {}
-            for p in Object.keys(@) then mask[p] = undefined
-            mask['cb'] = cb
-            mask['cbjs'] = CBJS
-
-            (->
-              `with (this) {
-                eval(script)
-              }`
-              return
-            ).call mask
-
-            return cb
-
-          activateApp = ->
-            getSettings runScript().settings_choices, (settings) ->
-              runScript(apps[slot] = cb = new CB(slot, settings)).sendNotice(appName + ' app has started.')
-
-              apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(3) a')
-              .text('Deactivate This App').addClass('stop_link').removeClass('toolbar_popup_link').attr('href', '#').off('click').on('click', deactivateApp)
-              apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(2)')
-              .addClass('center').removeClass('center_empty').removeClass('top_row_center_empty').text(appName)
-
-              Room.updateUI()
-
-            return false
-
-          deactivateApp = ->
-            if cb isnt null
-              apps[slot] = cb = cb.__activated = null
-              Room.loadApp(path, slot)
-
-              return false
-
-          apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(3) a')
-          .text('Start "' + appName + '"').addClass('toolbar_popup_link').removeClass('stop_link').attr('href', '#').off('click').on('click', activateApp)
-          apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(2)')
-          .addClass('center_empty').removeClass('center').removeClass('top_row_center').text('None Selected')
-
-          Room.updateUI()
-      }
+      url     : path,
+      dataType: 'text',
+      success : (script) -> loadScript({script, slot}, -> Room.loadApp(path, slot))
     )
+
+    return
+
+  @loadAppFromCB: (name, slot) ->
+    $.ajax(
+      url     : 'https://cors-anywhere.herokuapp.com/https://chaturbate.com/apps/sourcecode/' + name + '/?slot=' + slot,
+      dataType: 'text',
+      success : (data) ->
+        $appPage = $(data.replace(/src="[^"]*"/g, ''))
+
+        script = $appPage.find('textarea.form_sourcecode').text()
+        name = $appPage.find('div#app_title').text().trim()
+
+        loadScript({script, slot, name})
+      error   : (jqXHR, textStatus, errorThrown) ->
+        console.error(jqXHR, textStatus, errorThrown)
+        alert('Failed to load the App "' + name + '".\nError: ' + errorThrown)
+    )
+
+    return
+
+  @loadAppFromFile: (slot) ->
+    $("#app_js_file").off('change').on('change', (e) ->
+      file = e.target.files[0]
+
+      if file
+        fileReader = new FileReader
+        fileReader.addEventListener 'load', (e) ->
+          script = e.target.result
+          loadScript({script, slot}) if script
+        fileReader.readAsText(file)
+
+        $(this).replaceWith($('<input id="app_js_file" type="file" accept="application/javascript"/>').hide())
+    ).trigger('click')
+
+    return
 
   @message: (message) ->
     if message is '/debug'
@@ -210,7 +254,7 @@ class Room
       $debug.find('p').text('Debug mode ' + if not debug then 'enabled. Type /debug again to disable.' else 'disabled.')
       debug = not debug
 
-    else if match = message.match(/^\/tip(?:\s([0-9]+)(?:\s(.*))?)?/)
+    else if match = message.match(/^\/tip(?:\s(?:([0-9]+)(?:\s(.*))?)?)?$/)
       if currentUser isnt broadcaster
         amount = match[1]
         message = match[2]
@@ -262,18 +306,18 @@ class Room
     $tip.find('span.username').attr('data-nick', tip.from_user).text(tip.from_user).addClass getUserTypeClass(user)
     $tip.find('span.tipalert').append(document.createTextNode(' tipped ' + tip.amount + ' tokens' + (if message then ' -- ' + message else '')))
 
-    (
-      new Audio('cb/sounds/' + (
-          switch
-            when amount >= 1000 then 'huge'
-            when amount >= 500 then 'large'
-            when amount >= 100 then 'medium'
-            when amount >= 15 then 'small'
-            else
-              'tiny'
-        ) + '.mp3'
-      )
-    ).play()
+    tipSound = new Audio('cb/sounds/' + (
+        switch
+          when amount >= 1000 then 'huge'
+          when amount >= 500 then 'large'
+          when amount >= 100 then 'medium'
+          when amount >= 15 then 'small'
+          else
+            'tiny'
+      ) + '.mp3'
+    )
+    tipSound.volume = 0.05
+    tipSound.play()
 
   @notice: (message = '', to_user = '', background = '#FFFFFF', foreground = '#000000', weight = 'normal', to_group = '') ->
     for message in message.split('\n')
@@ -286,6 +330,8 @@ class Room
 
   @log: (message) -> appendToChatList($('<div class="text"><p>')).find('p').text('Debug: ' + message) if debug
 
+  @error: (message) -> appendToChatList($('<div class="text"><p>')).find('p').text('Error: ' + message)
+
   @addUser: (newUser) ->
     newUser = User(newUser)
 
@@ -297,7 +343,6 @@ class Room
       $enter.append (if newUser.is_mod then 'Moderator ' else '')
       $enter.append('<span class="username othermessagelabel">').find('span.username').attr('data-nick', newUser.user).text(newUser.user).addClass getUserTypeClass(newUser)
       $enter.append ' has joined the room.'
-      $enter.append($('<span class="__debug">').css({color: '#CCC'}).text(' [to_user=' + broadcaster + ']')) if newUser.has_tokens and not newUser.is_mod
 
       triggerHandler 'enter', newUser
 
@@ -313,7 +358,6 @@ class Room
       $leave.append (if user.is_mod then 'Moderator ' else '')
       $leave.append('<span class="username othermessagelabel">').find('span.username').attr('data-nick', user.user).text(user.user).addClass getUserTypeClass(user)
       $leave.append ' has left the room.'
-      $leave.append($('<span class="__debug">').css({color: '#CCC'}).text(' [to_user=' + broadcaster + ']')) if user.has_tokens and not user.is_mod
 
       return user
 
@@ -344,7 +388,7 @@ class Room
       $('#roomtitleform').find('input[name=roomtitle]').val(subject)
       $('#roomtitle').text(subject)
 
-  @drawPanel: (panelOptions = triggerHandler('drawPanel') or {}) ->
+  @drawPanel: (panelOptions = triggerHandler('drawPanel') or {template: null, row1_label: '', row1_value: '', row2_label: '', row2_value: '', row3_label: '', row3_value: ''}) ->
     if currentUser is broadcaster
       $('#broadcaster_panel').show()
       $('#user_panel').hide()
@@ -399,6 +443,40 @@ class Room
     $userInformation.find('img').attr(icons[user.gender])
     $('#user_information span.tokencount, .tip_shell .token_balance div.tokens.tokencount, .overlay_popup.tip_popup .balance span.tokencount').html(if user.has_tokens then '&infin;' else '0')
 
+    for app, slot in apps
+      $apps_and_bots_table = $('#apps_and_bots_table')
+      $appName = $apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(2)')
+      $appAction = $apps_and_bots_table.find('tr:nth-child(' + (slot + 1) + ') td:nth-child(3)').html('')
+
+      $deactivate = $('<a href="#">').text('Deactivate This App').addClass('stop_link').on('click', ((slot) -> return -> Room.deactivateApp(slot))(slot))
+      $choose = $('<a href="#">').text('Choose a ' + (if slot == 0 then 'App' else 'Bot')).addClass('toolbar_popup_link').on('click', ((slot) -> return ->
+        appId = prompt('Enter the App ID/URL or\nLeave empty to load from a file:')
+
+        if appId
+          match = appId.match(/chaturbate\.com\/app\/[^\/]*\/([^\/]*)\/?/)
+          appId = match[1] if match
+
+          Room.loadAppFromCB(appId, slot)
+        else
+          Room.loadAppFromFile(slot)
+
+        return false)(slot)
+      )
+      $restart = $('<a href="#">').text('Restart "' + app.name + '"').addClass('toolbar_popup_link').on('click', ((slot) -> return -> Room.activateApp(slot))(slot))
+
+      if app.cb instanceof CB
+        $appName.addClass(if slot == 0 then 'top_row_center' else 'center').removeClass('center_empty').removeClass('top_row_center_empty').text(app.name)
+        $appAction.append($deactivate)
+      else
+        if app.script
+          $appAction.append($choose)
+          $appAction.append($('<span>').text(' or '))
+          $appAction.append($restart)
+        else
+          $appAction.append($choose)
+
+        $appName.addClass(if slot == 0 then 'top_row_center_empty' else 'center_empty').removeClass('center').removeClass('top_row_center').text('None Selected')
+
     return
 
   @init: ->
@@ -407,7 +485,7 @@ class Room
     )
 
     $('#roomtitle').on 'click', -> # Show change subject form
-      $(this).hide();
+      $(this).hide()
       $('#roomtitleform').show().find('input[name=roomtitle]').val(Room.getSubject()).select()
       $('#tooltip-subject').show()
 
@@ -416,15 +494,15 @@ class Room
     $('#roomtitleform').find('input[value=Submit]').on 'click', -> # Change subject
       Room.setSubject($('#roomtitleform').find('input[name=roomtitle]').val())
 
-      $('#roomtitle').show();
+      $('#roomtitle').show()
       $('#roomtitleform').hide().find('input[name=roomtitle]').val(Room.getSubject())
       $('#tooltip-subject').hide()
 
       return false
 
     $('#roomtitleform').find('input[value=Cancel]').on 'click', -> # Cancel subject change
-      $(this).hide().find('input[name=roomtitle]').val(Room.getSubject())
-      $('#roomtitle').show();
+      $('#roomtitle').show()
+      $('#roomtitleform').hide().find('input[name=roomtitle]').val(Room.getSubject())
       $('#tooltip-subject').hide()
 
       return false
