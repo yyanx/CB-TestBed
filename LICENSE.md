@@ -22,4 +22,4 @@ SOFTWARE.
 
 #### Exception
 
-All files under the [testbed/cb](testbed/cb) directory and the [testbed/index.html](testbed/index.html) file (some of them with modifications) are copyrighted to Chaturbate.com.
+All files under the [cb](cb) directory and the [index.html](index.html) file (some of them with modifications) are copyrighted to Chaturbate.com.

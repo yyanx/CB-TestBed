@@ -9,11 +9,11 @@ Download the [latest release](https://github.com/yyanx/CB-TestBed/releases/lates
 
 ### Run
 To be able to test your app on CB-TestBed, run the file `bin/run.sh`
-or go to the [testbed](testbed) directory and run `python -m SimpleHTTPServer 8000` on terminal.
+or go to the project directory and run `python -m SimpleHTTPServer 8000` on terminal.
 Now you can access [localhost:8000](http://localhost:8000) on your browser and test your app.
 
 ### Develop
-Develop your apps & bots under the [testbed/app](testbed/app) directory.
+Develop your apps & bots under the [app](app) directory.
 Running multiple apps/bots at the same time are not realiable.
 
 - `cb/CBApp.js` is the app file;
@@ -33,7 +33,7 @@ No need to reload the page.
 
 ##### Emoticons
 The default emoticons are available.
-Put your custom emoticons under the [testbed/cb/emoticons](testbed/cb/emoticons) directory.
+Put your custom emoticons under the [cb/emoticons](cb/emoticons) directory.
 
 - `cool.jpg` -> `:cool` 
 - `lmao.jpg` -> `:lmao` 
@@ -54,8 +54,8 @@ If you want to add or remove users (onEnter/onLeave events) use your Developer T
 - `Room.removeUser(username)`, where `username` is a string with username of the user.
 
 ### Build
-If want to build it yourself or if you need to modify the CB-TestBed code under the [testbed/src](testbed/src) directory,
-run the file `bin/build.sh` or go to the [testbed](testbed) directory and run `cat src/*.coffee | coffee --bare --compile --no-header --stdio > script.js` on terminal.
+If want to build it yourself or if you need to modify the CB-TestBed code under the [src](src) directory,
+run the file `bin/build.sh` or go to the project directory and run `cat src/*.coffee | coffee --bare --compile --no-header --stdio > script.js` on terminal.
 Now run the CB-TestBed and test your app.
 
 ### Issues
@@ -65,4 +65,4 @@ If you are having problems, open a [new issue](https://github.com/yyanx/CB-TestB
 Released under [The MIT License (MIT)](LICENSE.md).
 
 ###### Exception
-All files under the [testbed/cb](testbed/cb) directory and the [testbed/index.html](testbed/index.html) file (some of them with modifications) are copyrighted to Chaturbate.com.
+All files under the [cb](cb) directory and the [index.html](index.html) file (some of them with modifications) are copyrighted to Chaturbate.com.
