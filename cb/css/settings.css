@@ -1,0 +1,48 @@
+form#app_start_form table {
+  margin : 0 auto;
+}
+
+form#app_start_form table input {
+  font           : 100% Arial, Helvetica, sans-serif;
+  vertical-align : middle;
+  color          : #000;
+}
+
+form#app_start_form table th {
+  text-align : right;
+}
+
+form#app_start_form table th label {
+  display     : block;
+  font        : 1em/1.3em 'UbuntuMedium', Arial, Helvetica, sans-serif;
+  font-weight : bold;
+  padding     : 0;
+  margin      : 0 4px 6px 0;
+  color       : #494949;
+}
+
+form#app_start_form table th.requiredfield label:after {
+  content : ' *';
+}
+
+form#app_start_form input[type=submit] {
+  display               : block;
+  margin                : 15px auto;
+  color                 : #FFF;
+  width                 : auto;
+  font                  : 1.16em/1.0em 'UbuntuMedium', Arial, Helvetica, sans-serif;
+  font-weight           : bold;
+  background            : #F47321 url(../images/arrow-white-v2.gif) no-repeat right 50%;
+  height                : 28px;
+  padding               : 0 30px 2px 15px;
+  border                : 1px solid #B1B1B1;
+  border-radius         : 4px;
+  -webkit-border-radius : 4px;
+  -moz-border-radius    : 4px;
+}
+
+form#app_start_form input[type=submit]:hover {
+  background-color : #FF6300;
+  text-decoration  : underline;
+  cursor           : pointer;
+}

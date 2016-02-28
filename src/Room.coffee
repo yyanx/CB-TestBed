@@ -56,11 +56,69 @@ class Room
     User(user: 'tippedTonsRecently', tipped_tons_recently: true, has_tokens: true, gender: 'm')
   ]
 
-  getSettings = (settings_choices, callback) -> # TODO App options
-    settings = {}
-    for setting in settings_choices then settings[setting.name] = setting.defaultValue
+  getSettings = (settings_choices, slot, callback) ->
+    app = apps[slot]
 
-    callback settings
+    buildSettingLine = (setting, value = setting.defaultValue or setting.default) ->
+      $line = $('<tr><th><label></label></th><td colspan="2"></td></tr>')
+
+      $line.find('th').addClass('requiredfield') if setting.required isnt false
+      $line.find('label').attr('for', 'id_' + setting.name).text(setting.label + (if setting.type isnt 'choice' then ':' else ''))
+
+      switch setting.type
+        when 'int'
+          $input = $('<input type="number">').attr(
+            id  : 'id_' + setting.name
+            name: setting.name
+            min : setting.minValue if setting.minValue isnt undefined
+            max : setting.maxValue if setting.maxValue isnt undefined
+          )
+          $input.val(value)
+          $line.find('td').append($input)
+        when 'str'
+          $input = $('<input type="text">').attr(
+            id       : 'id_' + setting.name
+            name     : setting.name
+            minLength: setting.minLength if setting.minLength isnt undefined
+            maxLength: setting.maxLength if setting.maxLength isnt undefined
+          )
+          $input.val(value)
+          $line.find('td').append($input)
+        when 'choice'
+          $select = $('<select>').attr(
+            id  : 'id_' + setting.name
+            name: setting.name
+          )
+
+          while choice = setting['choice' + (++i or i = 1)]
+            $select.append($('<option>').val(choice).text(choice).attr({selected: 'selected' if choice is value}))
+
+          $line.find('td').append($select)
+
+      $line
+
+    if settings_choices and settings_choices instanceof Array and settings_choices.length > 0
+      appOptions = open('', 'cb-testbed-app' + slot, 'width=768,height=576,location=0,menubar=0,status=0,toolbar=0', true)
+
+      if appOptions
+        if appOptions.location.host is ''
+          appOptions.history.pushState('', '', window.location.origin + '/options?slot=' + slot);
+          appOptions.document.write('<html><head><title>' + app.name + ' Options</title><link rel="stylesheet" href="cb/css/settings.css" type="text/css"></head><body><form id="app_start_form"><table><tbody></tbody></table><input type="submit"></form></body></html>')
+
+          $(appOptions.document.body).find('input[type=submit]').val('Start ' + (if slot is 0 then 'App' else 'Bot'))
+          $(appOptions.document.body).find('tbody').append(buildSettingLine(setting, app.settings[setting.name])) for setting in settings_choices
+          $(appOptions.document.body).find('form').on 'submit', ->
+            app.settings = $(this).serializeArray().reduce(((settings, setting) -> settings[setting.name] = setting.value; settings), {})
+            callback $.extend({}, app.settings)
+            appOptions.close()
+
+            return false
+
+        appOptions.focus()
+      else
+        alert('Allow pop-ups from this page to view the options.')
+    else
+      callback {}
 
   appendToChatList = ($node) ->
     $chatList = $('#defchat').find('div.section > div.chat-holder > div > div.chat-list').append($node)
@@ -71,10 +129,14 @@ class Room
     $node
 
   triggerHandler = (type, obj) ->
-    for app in apps
-      if app.cb and handler = app.cb.__eventsHandlers[type]
-        result = handler(obj)
-        obj = result if result and (type != 'message' or (result instanceof Object and result.m isnt undefined))
+    for app in apps.slice().reverse()
+      if app.cb instanceof CB and app.cb.__activated and handler = app.cb.__eventsHandlers[type]
+        try
+          result = handler(obj)
+          obj = result if result and (type != 'message' or (result instanceof Object and result.m isnt undefined))
+        catch e
+          Room.error(e.message, 'An error occurred: ')
+          Room.deactivateApp(app.cb.slot)
 
     return obj
 
@@ -152,13 +214,14 @@ class Room
 
     $('.chat-box .buttons span.usercount').text(Room.getUsers().length)
 
-  loadScript = ({script, slot, name}, deactivateCallback) ->
+  loadScript = ({script, slot, name, defaultSettings}, deactivateCallback) ->
     if script
       Room.deactivateApp(slot)
 
       app = apps[slot] = {}
       app.name = name or if slot is 0 then 'CBApp' else 'CBBot #' + slot
       app.script = script
+      app.settings = defaultSettings or {}
       app.deactivateCallback = deactivateCallback
 
     Room.updateUI()
@@ -187,7 +250,7 @@ class Room
 
       return cb
 
-    getSettings runScript().settings_choices, (settings) ->
+    getSettings runScript().settings_choices, slot, (settings) ->
       runScript(app.cb = new CB(slot, settings)).sendNotice(app.name + ' app has started.')
 
       Room.updateUI()
@@ -199,17 +262,17 @@ class Room
 
     if app and app.cb instanceof CB
       app.cb = app.cb.__activated = null
-      app.deactivateCallback() if app.deactivateCallback instanceof Function
+      app.deactivateCallback(app) if app.deactivateCallback instanceof Function
 
     @updateUI()
 
     return false
 
-  @loadApp: (path, slot) ->
+  @loadApp: (path, slot, defaultSettings) ->
     $.ajax(
       url     : path,
       dataType: 'text',
-      success : (script) -> loadScript({script, slot}, -> Room.loadApp(path, slot))
+      success : (script) -> loadScript({script, slot, defaultSettings}, (app) -> Room.loadApp(path, slot, app.settings))
     )
 
     return
@@ -330,7 +393,7 @@ class Room
 
   @log: (message) -> appendToChatList($('<div class="text"><p>')).find('p').text('Debug: ' + message) if debug
 
-  @error: (message) -> appendToChatList($('<div class="text"><p>')).find('p').text('Error: ' + message)
+  @error: (message, prefix = 'Error: ') -> appendToChatList($('<div class="text"><p>')).find('p').text(prefix + message)
 
   @addUser: (newUser) ->
     newUser = User(newUser)
@@ -462,7 +525,7 @@ class Room
 
         return false)(slot)
       )
-      $restart = $('<a href="#">').text('Restart "' + app.name + '"').addClass('toolbar_popup_link').on('click', ((slot) -> return -> Room.activateApp(slot))(slot))
+      $restart = $('<a href="/options?slot=' + slot + '">').text('Restart "' + app.name + '"').addClass('toolbar_popup_link').on('click', ((slot) -> return -> Room.activateApp(slot))(slot))
 
       if app.cb instanceof CB
         $appName.addClass(if slot == 0 then 'top_row_center' else 'center').removeClass('center_empty').removeClass('top_row_center_empty').text(app.name)
