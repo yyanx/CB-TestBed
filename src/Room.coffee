@@ -102,7 +102,6 @@ class Room
 
       if appOptions
         if appOptions.location.host is ''
-          appOptions.history.pushState('', '', window.location.origin + '/options?slot=' + slot);
           appOptions.document.write('<html><head><title>' + app.name + ' Options</title><link rel="stylesheet" href="cb/css/settings.css" type="text/css"></head><body><form id="app_start_form"><table><tbody></tbody></table><input type="submit"></form></body></html>')
 
           $(appOptions.document.body).find('input[type=submit]').val('Start ' + (if slot is 0 then 'App' else 'Bot'))
@@ -384,12 +383,12 @@ class Room
 
   @notice: (message = '', to_user = '', background = '#FFFFFF', foreground = '#000000', weight = 'normal', to_group = '') ->
     for message in message.split('\n')
-      $notice = appendToChatList($('<div class="text"><p>')).find('p')
+      $notice = appendToChatList($('<div class="text"><p><span>')).find('span')
 
       $notice.append('Notice: ' + getEmoticons(message)).css({backgroundColor: background, color: foreground, fontWeight: weight})
 
       if to_user or to_group
-        $notice.append($('<span class="__debug">').css({color: '#CCC'}).text((if to_user then ' [to_user=' + to_user + ']' else '') + (if to_group then ' [to_group=' + to_group + ']' else '')))
+        $notice.parent().append($('<span class="__debug">').css({color: '#CCC'}).text((if to_user then ' [to_user=' + to_user + ']' else '') + (if to_group then ' [to_group=' + to_group + ']' else '')))
 
   @log: (message) -> appendToChatList($('<div class="text"><p>')).find('p').text('Debug: ' + message) if debug
 
@@ -525,7 +524,7 @@ class Room
 
         return false)(slot)
       )
-      $restart = $('<a href="/options?slot=' + slot + '">').text('Restart "' + app.name + '"').addClass('toolbar_popup_link').on('click', ((slot) -> return -> Room.activateApp(slot))(slot))
+      $restart = $('<a href="#options_slot' + slot + '">').text('Restart "' + app.name + '"').addClass('toolbar_popup_link').on('click', ((slot) -> return -> Room.activateApp(slot))(slot))
 
       if app.cb instanceof CB
         $appName.addClass(if slot == 0 then 'top_row_center' else 'center').removeClass('center_empty').removeClass('top_row_center_empty').text(app.name)
