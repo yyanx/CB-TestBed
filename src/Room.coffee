@@ -450,7 +450,7 @@ class Room
       $('#roomtitleform').find('input[name=roomtitle]').val(subject)
       $('#roomtitle').text(subject)
 
-  @drawPanel: (panelOptions = triggerHandler('drawPanel') or {template: null, row1_label: '', row1_value: '', row2_label: '', row2_value: '', row3_label: '', row3_value: ''}) ->
+  @drawPanel: (panelOptions = triggerHandler('drawPanel', @getCurrentUser()) or {template: null, row1_label: '', row1_value: '', row2_label: '', row2_value: '', row3_label: '', row3_value: ''}) ->
     if currentUser is broadcaster
       $('#broadcaster_panel').show()
       $('#user_panel').hide()
